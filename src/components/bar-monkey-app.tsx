@@ -64,7 +64,7 @@ export function BarMonkeyApp() {
   }, [messages]);
 
   return (
-    <div className="flex h-screen w-full bg-background overflow-hidden relative font-sans text-foreground">
+    <div className="flex h-[100dvh] w-full bg-background overflow-hidden relative font-sans text-foreground overscroll-none">
       
       {/* Sidebar Overlay (Mobile only) */}
       {isSidebarOpen && (

@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Send, GlassWater, Loader2, Menu } from "lucide-react";
+import { Send, GlassWater, Loader2, Menu, X } from "lucide-react";
 import type { InventoryItem } from '@/lib/db';
 
 export function BarMonkeyApp() {
@@ -17,6 +17,7 @@ export function BarMonkeyApp() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [input, setInput] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -65,16 +66,39 @@ export function BarMonkeyApp() {
   return (
     <div className="flex h-screen w-full bg-background overflow-hidden relative font-sans text-foreground">
       
+      {/* Sidebar Overlay (Mobile only) */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden animate-in fade-in duration-300"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar: Inventory */}
-      <aside className="w-72 md:w-80 bg-white/90 backdrop-blur-xl shadow-[4px_0_24px_rgba(0,0,0,0.02)] border-r border-border flex flex-col shrink-0 z-30">
+      <aside className={`
+        fixed inset-y-0 left-0 z-50 w-72 md:w-80 bg-white/95 backdrop-blur-xl shadow-2xl md:shadow-[4px_0_24px_rgba(0,0,0,0.02)] 
+        border-r border-border flex flex-col shrink-0 transition-transform duration-300 ease-in-out
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        md:relative
+      `}>
         <div className="p-4 flex items-center justify-between border-b border-border/50">
           <div className="flex items-center gap-2">
             <GlassWater className="w-5 h-5 text-primary" />
             <h2 className="font-semibold text-lg text-foreground tracking-wide">Your Bar</h2>
           </div>
-          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-bold">
-            {inventory.length}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-bold">
+              {inventory.length}
+            </span>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="md:hidden h-8 w-8 text-muted-foreground"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
         
         <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 scrollbar-hide">
@@ -105,13 +129,24 @@ export function BarMonkeyApp() {
       <main className="flex-1 flex flex-col h-full relative bg-background">
         
         {/* Top Navigation */}
-        <header className="h-16 flex items-center justify-between px-4 lg:px-8 absolute top-0 w-full z-10 glass rounded-b-3xl mx-auto max-w-4xl left-0 right-0 top-0 mt-0 shadow-[0_4px_24px_rgba(0,0,0,0.02)] border-b border-x border-border">
-          <div className="flex items-center justify-center flex-1 w-full gap-3">
-            <img src="/logo.png" alt="Bar Monkey" className="w-10 h-10 object-contain mix-blend-multiply contrast-[1.15] brightness-[1.05]" />
-            <h1 className="text-xl font-black tracking-tight text-foreground uppercase">
+        <header className="h-16 flex items-center justify-between px-4 md:px-6 absolute top-0 w-full z-10 glass rounded-b-2xl md:rounded-b-3xl mx-auto max-w-4xl left-0 right-0 shadow-[0_4px_24px_rgba(0,0,0,0.02)] border-b border-x border-border">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="md:hidden text-muted-foreground hover:text-primary transition-colors"
+            onClick={() => setIsSidebarOpen(true)}
+          >
+            <Menu className="w-6 h-6" />
+          </Button>
+          
+          <div className="flex items-center justify-center flex-1 gap-2 md:gap-3">
+            <img src="/logo.png" alt="Bar Monkey" className="w-8 h-8 md:w-10 md:h-10 object-contain mix-blend-multiply contrast-[1.15] brightness-[1.05]" />
+            <h1 className="text-base md:text-xl font-black tracking-tight text-foreground uppercase truncate">
               Bar Monkey
             </h1>
           </div>
+          
+          <div className="w-10 md:hidden" /> {/* Spacer for centering logo on mobile */}
         </header>
 
         {/* Chat Messages */}
@@ -139,7 +174,7 @@ export function BarMonkeyApp() {
             {/* Messages */}
             {messages.map((message) => (
               <div key={message.id} className={`flex w-full ${message.role === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-4 duration-300`}>
-                <div className={`flex gap-3 max-w-[85%] md:max-w-[75%] ${message.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex gap-2 md:gap-3 max-w-[92%] md:max-w-[80%] ${message.role === 'user' ? 'flex-row-reverse' : ''}`}>
                   
                   {message.role === 'user' ? (
                     <Avatar className={`w-8 h-8 md:w-10 md:h-10 shrink-0 border shadow-sm border-primary/30`}>

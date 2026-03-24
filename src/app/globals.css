@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+:root {
+  /* Warm Cream Background matches the logo's outer canvas */
+  --background: #FDFBF7; 
+  /* Dark Slate / Navy for text, matches the monkey's vest and "BAR MONKEY" text */
+  --foreground: #1E252B; 
+  
+  --card: #FFFFFF;
+  --card-foreground: #1E252B;
+  
+  --popover: #FFFFFF;
+  --popover-foreground: #1E252B;
+  
+  /* Vibrant Orange/Gold for the monkey's background circle and bowtie */
+  --primary: #F59E0B; 
+  --primary-foreground: #FFFFFF;
+  
+  /* Very light warm gray/beige for secondary elements */
+  --secondary: #F0EDE5; 
+  --secondary-foreground: #1E252B;
+  
+  --muted: #E5E2DA;
+  --muted-foreground: #6B7280;
+  
+  --accent: #FDFBF7;
+  --accent-foreground: #F59E0B;
+  
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  
+  --border: #E5E2DA;
+  --input: #E5E2DA;
+  --ring: #F59E0B;
+  
+  --radius: 1rem;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Optional glass class if needed, adapted for light mode */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+}
